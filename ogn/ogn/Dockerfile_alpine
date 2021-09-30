@@ -1,0 +1,17 @@
+FROM arm32v7/alpine
+
+RUN apk add --no-cache bash netcat-openbsd jpeg-dev fftw-dev lynx openntpd rtl-sdr libconfig libstdc++ libgcc
+
+RUN wget http://download.glidernet.org/arm/rtlsdr-ogn-bin-ARM-latest.tgz -O /opt/glidernet.tgz && \
+    tar --strip-components=1 -xf /opt/glidernet.tgz -C /opt && \
+    chown root /opt/gsm_scan && \
+    chmod a+s /opt/gsm_scan && \
+    chown root /opt/ogn-rf && \
+    chmod a+s  /opt/ogn-rf && \
+    rm -f /opt/glidernet.tgz
+
+RUN echo -e "blacklist 8192cu" > /etc/modprobe.d/blacklist-8192cu.conf && \
+    echo -e "blacklist rtl2832\nblacklist r820t\nblacklist rtl2830\nblacklist dvb_usb_rtl28xxu" > /etc/modprobe.d/blacklist-rtl8xxxu.conf
+
+COPY start.sh ./
+CMD ./start.sh

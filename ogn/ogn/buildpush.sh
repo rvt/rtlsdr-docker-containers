@@ -1,0 +1,1 @@
+../../buildAndPush.sh
