@@ -38,7 +38,7 @@ Under investigation `vcgencmd display_power 0 3` to turn off HDMI0, or `vcgencmd
 
 ```bash
 echo "/usr/bin/tvservice -o" | sudo tee -a /etc/cron.daily/poweroffhdmi
-sudo chmod 0755 /etc/cron.daily/poweroffhdmi
+sudo chmod +x /etc/cron.daily/poweroffhdmi
 ```
 
 

@@ -6,5 +6,7 @@ RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for
 
 COPY wisdom.local ./
 COPY start.sh ./
+RUN chmod +x ./start.sh
+
 EXPOSE 8080 30001 30002 30003 30004 30005 30104
 CMD ./start.sh

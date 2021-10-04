@@ -60,6 +60,7 @@ RUN mkdir -p /var/run/pulse/.config/pulse && chown -R pulse:pulse /var/run/pulse
 
 WORKDIR /var/run/pulse/
 COPY start.sh ./
+RUN chmod +x ./start.sh
 
 USER pulse
 CMD ./start.sh

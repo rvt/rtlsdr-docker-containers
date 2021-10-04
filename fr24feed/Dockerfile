@@ -15,7 +15,8 @@ RUN ar x /tmp/fr24feed.deb && \
     chmod +x start.sh && \
     rm -Rv /etc/systemd/system/fr24feed.service && \
     rm -Rv /etc/fr24feed.ini && \
-    rm -Rv /etc/udev/rules.d/rtl-sdr.rules
-
+    rm -Rv /etc/udev/rules.d/rtl-sdr.rules && \
+    chmod +x start.sh
+    
 CMD ["/start.sh"]
 

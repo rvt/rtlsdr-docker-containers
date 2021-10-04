@@ -14,7 +14,8 @@ RUN apt-get update &&  \
 COPY ./etc/icecast2/icecast.xml /etc/
 COPY ./start.sh /
 
-RUN chown -R icecast2 /etc/icecast2
+RUN chown -R icecast2 /etc/icecast2 && \
+  chmod +x ./start.sh 
 
 EXPOSE 8000
 

@@ -28,6 +28,7 @@ RUN echo -e "blacklist 8192cu" > /etc/modprobe.d/blacklist-8192cu.conf && \
     echo -e "blacklist rtl2832\nblacklist r820t\nblacklist rtl2830\nblacklist dvb_usb_rtl28xxu" > /etc/modprobe.d/blacklist-rtl8xxxu.conf
 
 COPY start.sh /
+RUN chmod +x /start.sh
 
 WORKDIR /opt
 EXPOSE 8080 8081 50010

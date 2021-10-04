@@ -15,5 +15,6 @@ RUN apt-get update && \
 RUN curl -k https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh --output wait-for-it.sh && chmod +x wait-for-it.sh
 COPY pulse-client.conf /etc/pulse/client.conf
 COPY start.sh darkice.cfg ./
+RUN chmod +x ./start.sh
 
 CMD ./wait-for-it.sh icecast2:8000 && ./wait-for-it.sh pulseaudio_server:4713 && ./start.sh

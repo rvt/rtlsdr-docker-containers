@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 xmlstarlet ed --inplace -u "/icecast/authentication/source-password" -v $ICECAST_SOURCE_PASSWORD /etc/icecast2/icecast.xml
 xmlstarlet ed --inplace -u "/icecast/authentication/relay-password" -v $ICECAST_RELAY_PASSWORD /etc/icecast2/icecast.xml
