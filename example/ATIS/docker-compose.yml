@@ -2,13 +2,13 @@ version: "3.3"
 services:
 
   pulseaudio_server:
-    image: "rvantwisk/pulseaudio_server"
+    image: "rvantwisk/pulseaudio_server:202110041959"
     ports:
       - "4713:4713"
-    restart: always
+    restart: unless-stopped
 
   icecast2:
-    image: "rvantwisk/icecast2"
+    image: "rvantwisk/icecast2:202110042024"
     volumes:
       - logs:/var/log/icecast2
     environment:
@@ -18,27 +18,26 @@ services:
       - ICECAST_RELAY_PASSWORD=<RELAY PASSSWORD>
     ports:
       - "8000:8000"
-    restart: always
+    restart: unless-stopped
 
   pulse2icecast:
-    image: "rvantwisk/pulse2icecast"
+    image: "rvantwisk/pulse2icecast:202110042032"
     environment:
-      - ICECAST_SOURCE_PASSWORD=veJQEE7NxR7qyYYq
+      - ICECAST_SOURCE_PASSWORD=PASSWORD
     privileged: true
-    restart: always
-#    volumes:
-#      - "./darkice.cfg:/darkice/darkice.cfg:ro"
+    restart: unless-stopped
+    volumes:
+      - "./darkice.cfg:/darkice.cfg:ro"
     depends_on:
       - "icecast2"
       - "pulseaudio_server"
 
   rtlsdr_airband:
-    image: "rvantwisk/rtlsdr_airband"
-    restart: always
+    image: "rvantwisk/rtlsdr_airband:202110042022"
+    restart: unless-stopped
     privileged: true
-    devices: 
-      - /dev/bus/usb
     volumes:
+      - /dev/bus/usb:/dev/bus/usb
       - "./rtl_airband.conf:/airband/rtl_airband.conf:ro"
     depends_on:
       - "pulse2icecast"

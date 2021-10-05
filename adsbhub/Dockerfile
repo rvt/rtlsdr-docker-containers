@@ -1,4 +1,4 @@
-FROM arm32v7/alpine
+FROM arm32v7/alpine:3.11.12
 
 RUN apk add --no-cache bash netcat-openbsd
 

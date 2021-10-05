@@ -82,7 +82,7 @@ For this the project kalibrate is installed : https://github.com/steve-m/kalibra
 The goal is to get the diviation in PPM of your receiver, so when you tel airband to listen to a specific frequency, it knows hot to tune your SDR correctly compemnsated for the error in it's crystals.
 
 ```bash
-docker run -it --entrypoint bash --privileged -v /dev/bus/usb:/dev/bus/usb rvantwisk/rtlsdr_airband
+docker run -it --entrypoint bash --privileged -v /dev/bus/usb:/dev/bus/usb rvantwisk/rtlsdr_airband:202110042022
 root@9b80749a30df:/# kal -v -s 900
 Found 1 device(s):
   0:  Generic RTL2832U OEM
@@ -109,12 +109,17 @@ Fill in the value under `correction` in `docker-compose.yml`, this the above coe
 
 ## Start Airband
 
-copy the directry `example` to one of your raspberry’s, configure the passwords under icecast2 in `docker-compose.yml` and the station you want to listen to in `rtl_airband.conf`, then execute `docker-compose up`.
+copy the directory `example` to one of your raspberry’s, configure the passwords under icecast2 in `docker-compose.yml` and the station you want to listen to in `rtl_airband.conf`, then execute `docker-compose up`.
 
 Feed should be up and you should beable to listen to your feed here : [http://<IP RASPBERRY>:8000](http://<IP RASPBERRY>:8000)
 
 If you want to stream to an external iceast you can use `darkice.cfg`, then you must enable this in `docker-compose.yml`
 under the pulse2icecast setting.
+
+Note: You will have to convert the 8.33Khz 'channels' to real frequency, you can do that with [Frequency Converter](https://radioreferenceuk.co.uk/airband-8.33khz-converter.php?channel=).
+Just fill in the 'frequency' and it will convert it to the frequency you have to fill in into rtl_airband.conf.
+
+
 
 ## If you need to inspect a container
 
