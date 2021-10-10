@@ -1,1 +1,1 @@
-Latest version rvantwisk/darkice:202110042200
+Latest version rvantwisk/darkice:202110101347

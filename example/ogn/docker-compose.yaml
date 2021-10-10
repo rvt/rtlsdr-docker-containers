@@ -2,7 +2,7 @@ version: "3.4"
 services:
 
   ogn:
-    image: rvantwisk/ogn:202105301910
+    image: rvantwisk/ogn:202110101256
     volumes:
       - ./Station.conf:/opt/Station.conf:ro
     restart: unless-stopped

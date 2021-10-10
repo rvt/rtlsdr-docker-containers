@@ -4,8 +4,9 @@ tagDate=$(date '+%Y%m%d%H%M')
 image=${PWD##*/}
 
 fullNameWithTag="rvantwisk/${image}:${tagDate}"
+#fullNameWithTagLatest="rvantwisk/${image}"
 
-docker build --no-cache --pull -t "${fullNameWithTag}" . && docker push ${fullNameWithTag} 
+docker build --no-cache --pull -t "${fullNameWithTag}" . && docker push ${fullNameWithTag}
 
 echo "###########################################"
 echo "Tagged as ${fullNameWithTag}"
