@@ -1,1 +1,1 @@
-Latest version rvantwisk/opensky:202110101334
+Latest version rvantwisk/opensky:202112201121

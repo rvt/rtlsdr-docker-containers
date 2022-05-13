@@ -21,4 +21,5 @@ else
   exit 1
 fi
 
-/usr/local/bin/rtl_ais -n -p $ppm
+echo "Starting /usr/local/bin/rtl_ais -T -n -g $gain -p $ppm"
+/usr/local/bin/rtl_ais -T -n -g $gain -p $ppm

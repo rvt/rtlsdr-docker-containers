@@ -1,4 +1,4 @@
-FROM rvantwisk/rtlsdr_baseimage
+FROM rvantwisk/rtlsdr_baseimage:202112201431
 
 RUN apt autoclean && apt clean && apt-get autoremove && rm -rf /var/lib/apt/lists/* && mkdir /ramdisk
 

@@ -29,40 +29,40 @@ RUN  apt-get install libcap2-bin libusb-1.0-0-dev librtlsdr-dev dh-systemd libnc
 
 ############################################################################################################################################
 # Build SoapySDR
-FROM buildbase as SoapySDR
-RUN  apt-get install swig python python-dev swig3.0 python3 python3-dev && \
-    cd /tmp/build && \
-    git clone https://github.com/pothosware/SoapySDR.git && \
-    cd /tmp/build/SoapySDR && \
-    dpkg-buildpackage -b
+#FROM buildbase as SoapySDR
+#RUN  apt-get install swig python python-dev swig3.0 python3 python3-dev && \
+#    cd /tmp/build && \
+#    git clone https://github.com/pothosware/SoapySDR.git && \
+#    cd /tmp/build/SoapySDR && \
+#    dpkg-buildpackage -b
 
 ############################################################################################################################################
 # Build SoapyRTLSDR
-FROM buildbase as SoapyRTLSDR
-COPY --from=SoapySDR /tmp/build/*.deb /tmp/build/
-RUN  apt install /tmp/build/libsoapysdr0.*_armhf.deb && \
-     apt install /tmp/build/libsoapysdr-dev_*-1_armhf.deb && \
-     apt-get install librtlsdr-dev && \
-     cd /tmp/build && \
-     git clone https://github.com/pothosware/SoapyRTLSDR.git && \
-     cd /tmp/build/SoapyRTLSDR && \
-     dpkg-buildpackage -b 
+#FROM buildbase as SoapyRTLSDR
+#COPY --from=SoapySDR /tmp/build/*.deb /tmp/build/
+#RUN  apt install /tmp/build/libsoapysdr0.*_armhf.deb && \
+#     apt install /tmp/build/libsoapysdr-dev_*-1_armhf.deb && \
+#     apt-get install librtlsdr-dev && \
+#     cd /tmp/build && \
+#     git clone https://github.com/pothosware/SoapyRTLSDR.git && \
+#     cd /tmp/build/SoapyRTLSDR && \
+#     dpkg-buildpackage -b 
 
 ############################################################################################################################################
 # Build rtlsdr-airband
 FROM buildbase as RtlSdrAirband
-COPY --from=SoapySDR /tmp/build/*.deb /tmp/build/
+#COPY --from=SoapySDR /tmp/build/*.deb /tmp/build/
 ENV PLATFORM=rpiv2
 RUN \
     apt-get install librtlsdr-dev libusb-1.0-0-dev libpulse-dev libconfig++-dev libogg-dev libvorbis-dev libshout3-dev libmp3lame-dev libraspberrypi-dev && \
-    apt install /tmp/build/libsoapysdr0.*_armhf.deb && \
-    apt install /tmp/build/libsoapysdr-dev_*-1_armhf.deb && \
+#    apt install /tmp/build/libsoapysdr0.*_armhf.deb && \
+#    apt install /tmp/build/libsoapysdr-dev_*-1_armhf.deb && \
     git clone https://github.com/szpajder/RTLSDR-Airband.git && \
     apt-get install libfftw3-dev && \
     cd RTLSDR-Airband && \
     git checkout unstable && \
     mkdir build && cd build && cmake .. && \
-    make WITH_SOAPYSDR=1 PULSE=1 
+    make WITH_SOAPYSDR=0 PULSE=1 
 
 ############################################################################################################################################
 # Build KALIBRATION TOOL
@@ -86,11 +86,12 @@ RUN apt-get install libfftw3-dev librtlsdr-dev libusb-1.0-0-dev && \
 # Build RtlAIS
 FROM buildbase as RtlAIS
 ENV PLATFORM=rpiv2
+# git clone https://github.com/dgiardini/rtl-ais && \
 RUN apt-get install libfftw3-dev librtlsdr-dev libusb-1.0-0-dev libpthread-workqueue-dev && \
     cd /tmp && \
-    git clone https://github.com/dgiardini/rtl-ais && \
+    git clone https://github.com/mik3y/rtl-ais && \
     cd /tmp/rtl-ais && \
-	sed -i 's/^LDFLAGS+=-lpthread.*/LDFLAGS+=-lpthread -lm -lrtlsdr -L \/usr\/lib\//' Makefile && \
+    sed -i 's/^LDFLAGS+=-lpthread.*/LDFLAGS+=-lpthread -lm -lrtlsdr -L \/usr\/lib\//' Makefile && \
     make && \
     ls rtl_ais 
 
@@ -103,8 +104,8 @@ RUN echo 'APT::Get::Assume-Yes "true";\nAPT::Get::allow-remove-essential "true";
     echo 'APT::Install-Recommends "false";\nAPT::Install-Suggests "false";' > /etc/apt/apt.conf.d/90norecommends
 
 COPY --from=dump1090 /tmp/build/*.deb /tmp/build/
-COPY --from=SoapySDR /tmp/build/*.deb /tmp/build/
-COPY --from=SoapyRTLSDR /tmp/build/*.deb /tmp/build/
+#COPY --from=SoapySDR /tmp/build/*.deb /tmp/build/
+#COPY --from=SoapyRTLSDR /tmp/build/*.deb /tmp/build/
 COPY --from=RtlSdrAirband /tmp/RTLSDR-Airband/config/*  /usr/local/etc/
 COPY --from=RtlSdrAirband /tmp/RTLSDR-Airband/build/src/rtl_airband  /usr/local/bin/
 COPY --from=RtlSdrKalibration /tmp/build/kalibrate-rtl/src/kal  /usr/local/bin/
@@ -114,8 +115,8 @@ RUN apt-get update && \
     apt-get full-upgrade && \
 #    apt-get install systemd && \
     apt install /tmp/build/dump1090-fa_*_armhf.deb && \
-    apt install /tmp/build/libsoapysdr0.*_armhf.deb && \
-    apt install /tmp/build/soapysdr-tools_*_armhf.deb && \
+#    apt install /tmp/build/libsoapysdr0.*_armhf.deb && \
+#    apt install /tmp/build/soapysdr-tools_*_armhf.deb && \
     apt-get install librtlsdr0 libpulse0 libvorbisenc2 libmp3lame0 libshout-ocaml libconfig++9v5 libvorbisenc2 libmp3lame0 libshout-ocaml libconfig++9v5 libfftw3-3 && \
     apt-get install --reinstall libraspberrypi0 libraspberrypi-dev libraspberrypi-doc libraspberrypi-bin && \
     apt autoclean && apt clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
